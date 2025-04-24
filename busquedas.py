@@ -74,7 +74,9 @@ def dfs(arbol_busqueda, destino):
 
 def costo_uniforme(arbol_busqueda):
     """
-    Suponemos que los movimientos del laberinto tienen el costo = numero de la posicion desde donde se salto (cuantos cuadrados saltamos)
+    Suponemos que los movimientos del laberinto tienen 
+    el costo = numero de la posicion desde donde
+    se salto (cuantos cuadrados saltamos), ya que sino seria un BFS
     """
     camino = []
 
