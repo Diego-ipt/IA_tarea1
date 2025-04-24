@@ -14,6 +14,13 @@ class Nodo:
     def agregar_hijo(self, nodo_hijo):
         self.hijos.append(nodo_hijo)
 
+    def __lt__(self, other):
+        """
+        Define cómo comparar dos nodos. Esto es necesario para usar Nodo en una cola de prioridad.
+        En este caso, no importa cómo se comparen porque el costo acumulado se usa como prioridad.
+        """
+        return False  # Siempre devuelve False porque el costo acumulado es el criterio de comparación
+
 def arbol_busqueda(Laberinto):
     """
     Suponemos que los movimientos de la misma rama nunca deberian volver al mismo nodo para evitar ciclos
@@ -90,7 +97,7 @@ def dfs(arbol_busqueda, destino):
     return []
 
 
-def costo_uniforme(arbol_busqueda):
+def costo_uniforme(arbol_busqueda, destino):
     """
     Realiza una búsqueda de costo uniforme en el árbol de búsqueda.
     Devuelve el camino desde la raíz hasta el nodo destino si se encuentra.
@@ -102,7 +109,7 @@ def costo_uniforme(arbol_busqueda):
         costo_actual, nodo_actual, camino = heappop(prioridad)
 
         # Si encontramos el destino, devolvemos el camino
-        if nodo_actual.posicion == arbol_busqueda.posicion:
+        if nodo_actual.posicion == destino:
             return camino
 
         # Agregar los hijos del nodo actual a la cola de prioridad

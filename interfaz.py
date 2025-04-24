@@ -24,6 +24,7 @@ class Interfaz:
         """
         Dibuja el laberinto en la pantalla.
         """
+        fuente = pygame.font.Font(None, 36)  # Fuente para los números
         for fila in range(self.laberinto.filas):
             for col in range(self.laberinto.columnas):
                 color = self.colores["celda"]
@@ -42,6 +43,15 @@ class Interfaz:
                     (col * self.celda_tamano, fila * self.celda_tamano, self.celda_tamano, self.celda_tamano),
                     1
                 )
+
+                # Dibujar el número correspondiente en la celda
+                numero = self.laberinto.matriz[fila][col]
+                texto = fuente.render(str(numero), True, (0, 0, 0))
+                texto_rect = texto.get_rect(center=(
+                    col * self.celda_tamano + self.celda_tamano // 2,
+                    fila * self.celda_tamano + self.celda_tamano // 2
+                ))
+                pantalla.blit(texto, texto_rect)
 
     def animar_solucion(self):
         """
@@ -68,13 +78,19 @@ class Interfaz:
                     self.colores["camino"],
                     (col * self.celda_tamano, fila * self.celda_tamano, self.celda_tamano, self.celda_tamano)
                 )
+                # Volver a dibujar el número encima del camino
+                fuente = pygame.font.Font(None, 36)
+                numero = self.laberinto.matriz[fila][col]
+                texto = fuente.render(str(numero), True, (0, 0, 0))
+                texto_rect = texto.get_rect(center=(
+                    col * self.celda_tamano + self.celda_tamano // 2,
+                    fila * self.celda_tamano + self.celda_tamano // 2
+                ))
+                pantalla.blit(texto, texto_rect)
 
             pygame.display.flip()
             time.sleep(0.5)  # Pausa para la animación
 
-        # Mantener la ventana abierta hasta que el usuario la cierre
-        while True:
-            for evento in pygame.event.get():
-                if evento.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
+        # Cerrar la ventana automáticamente al finalizar la animación
+        pygame.quit()
+
