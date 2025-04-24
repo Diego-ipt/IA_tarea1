@@ -7,12 +7,18 @@ from utils import *
 DEBUG = False  # Variable global para controlar los mensajes de depuración
 VER_DFS = False  # Variable global para controlar la visualización de DFS
 VER_COSTO_UNIFORME = False  # Variable global para controlar la visualización de búsqueda de costo uniforme
+EJEMPLO_ESTANDAR = True  # Variable global para controlar la carga de un laberinto estándar
 
 def main():
     print("Bienvenido al programa de búsqueda de caminos en laberintos.")
     
     # Solicitar al usuario el archivo de laberintos
-    file_path = input("Por favor, ingrese la ruta del archivo de laberintos: ").strip()
+    if EJEMPLO_ESTANDAR==False:
+        file_path = input("Por favor, ingrese la ruta del archivo de laberintos: ").strip()
+    else:
+        file_path = r"D:\Universidad\7mo semestre\IA\IA_tarea1\Ejemplos\a.txt"
+
+    # Validar la ruta del archivo
     try:
         laberintos = read_labyrinth_file(file_path)
         print(f"Se han cargado {len(laberintos)} laberintos desde el archivo.")
@@ -47,9 +53,9 @@ def main():
         # Realizar búsqueda de costo uniforme
         if DEBUG:
             print("Buscando camino usando búsqueda de costo uniforme...")
-        camino_costo_uniforme = costo_uniforme(arbol, lab.destino)
+        camino_costo_uniforme, costo_T = costo_uniforme(arbol, lab.destino)
         if camino_costo_uniforme:
-            print(f"Costo Uniforme - Número de movimientos: {len(camino_costo_uniforme)-1}")
+            print(f"Costo Uniforme - Número de movimientos: {len(camino_costo_uniforme)-1}", "Numero de casillas saltadas: ", costo_T)
             if VER_COSTO_UNIFORME:
                 interfaz = Interfaz(lab, camino_costo_uniforme)
                 interfaz.animar_solucion()

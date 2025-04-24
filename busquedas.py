@@ -98,24 +98,29 @@ def dfs(arbol_busqueda, destino):
 
 
 def costo_uniforme(arbol_busqueda, destino):
+    # el inicio es la raiz del arbol
     """
-    Realiza una búsqueda de costo uniforme en el árbol de búsqueda.
-    Devuelve el camino desde la raíz hasta el nodo destino si se encuentra.
+    Suponemos que los movimientos del laberinto tienen 
+    el costo = numero de la posicion desde donde
+    se salto (cuantos cuadrados saltamos), ya que sino seria un BFS
+    --costo de un movimiento = nodo.valor--
     """
-    prioridad = []  # Cola de prioridad para nodos (costo acumulado, nodo, camino)
-    heappush(prioridad, (0, arbol_busqueda, [arbol_busqueda.posicion]))
+    # Cola de prioridad para almacenar los nodos junto con sus costos acumulados
+    cola_prioridad = []
+    heappush(cola_prioridad, (0, arbol_busqueda, [arbol_busqueda.posicion]))  # (costo acumulado, nodo, camino)
 
-    while prioridad:
-        costo_actual, nodo_actual, camino = heappop(prioridad)
+    while cola_prioridad:
+        costo_actual, nodo_actual, camino = heappop(cola_prioridad)
 
         # Si encontramos el destino, devolvemos el camino
         if nodo_actual.posicion == destino:
-            return camino
+            return camino , costo_actual
 
         # Agregar los hijos del nodo actual a la cola de prioridad
         for hijo in nodo_actual.hijos:
             nuevo_costo = costo_actual + hijo.valor
-            heappush(prioridad, (nuevo_costo, hijo, camino + [hijo.posicion]))
+            heappush(cola_prioridad, (nuevo_costo, hijo, camino + [hijo.posicion]))
 
     # Si no se encuentra el destino, devolvemos un camino vacío
-    return []
+    return [], 0
+
