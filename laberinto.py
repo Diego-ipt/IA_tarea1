@@ -18,20 +18,19 @@ class Laberinto:
         saltos = self.matriz[fila][col]  # Número saltarín de la celda actual
         movimientos = []
     
-        # Movimientos en línea recta
-        for i in range(1, saltos + 1):
-            # Abajo
-            if fila + i < self.filas and (fila + i, col) != posicion:
-                movimientos.append((fila + i, col))
-            # Arriba
-            if fila - i >= 0 and (fila - i, col) != posicion:
-                movimientos.append((fila - i, col))
-            # Derecha
-            if col + i < self.columnas and (fila, col + i) != posicion:
-                movimientos.append((fila, col + i))
-            # Izquierda
-            if col - i >= 0 and (fila, col - i) != posicion:
-                movimientos.append((fila, col - i))
+
+        # Abajo
+        if fila + saltos < self.filas and (fila + saltos, col) != posicion:
+            movimientos.append((fila + saltos, col))
+        # Arriba
+        if fila - saltos >= 0 and (fila - saltos, col) != posicion:
+            movimientos.append((fila - saltos, col))
+        # Derecha
+        if col + saltos < self.columnas and (fila, col + saltos) != posicion:
+            movimientos.append((fila, col + saltos))
+        # Izquierda
+        if col - saltos >= 0 and (fila, col - saltos) != posicion:
+            movimientos.append((fila, col - saltos))
     
         return movimientos
 
