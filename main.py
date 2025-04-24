@@ -16,7 +16,7 @@ def main():
     if EJEMPLO_ESTANDAR==False:
         file_path = input("Por favor, ingrese la ruta del archivo de laberintos: ").strip()
     else:
-        file_path = r"D:\Universidad\7mo semestre\IA\IA_tarea1\Ejemplos\a.txt"
+        file_path = r"D:\Universidad\7mo semestre\IA\IA_tarea1\Ejemplos\guia.txt"
 
     # Validar la ruta del archivo
     try:
