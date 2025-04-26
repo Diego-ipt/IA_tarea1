@@ -53,9 +53,9 @@ def main():
         # Realizar búsqueda de costo uniforme
         if DEBUG:
             print("Buscando camino usando búsqueda de costo uniforme...")
-        camino_costo_uniforme, costo_T = costo_uniforme(arbol, lab.destino)
+        camino_costo_uniforme = costo_uniforme(arbol, lab.destino)
         if camino_costo_uniforme:
-            print(f"Costo Uniforme - Número de movimientos: {len(camino_costo_uniforme)-1}", "Numero de casillas saltadas: ", costo_T)
+            print(f"Costo Uniforme - Número de movimientos: {len(camino_costo_uniforme)-1}")
             if VER_COSTO_UNIFORME:
                 interfaz = Interfaz(lab, camino_costo_uniforme)
                 interfaz.animar_solucion()

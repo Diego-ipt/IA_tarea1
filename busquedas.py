@@ -47,7 +47,8 @@ def arbol_busqueda(Laberinto):
 
         # Añadir los movimientos válidos como hijos del nodo actual
         for movimiento in movimientos_validos:
-            if movimiento not in nodo_actual.nodos_visitados:
+            if movimiento not in nodo_actual.nodos_visitados and movimiento != nodo_actual.posicion:
+                # Evitar ciclos: no añadir nodos que ya han sido visitados en la misma rama
                 # Crear un nuevo nodo hijo
                 nodo_hijo = Nodo(movimiento, Laberinto.matriz[movimiento[0]][movimiento[1]])
                 if DEBUG:
@@ -82,7 +83,7 @@ def dfs(arbol_busqueda, destino):
     stack = [(arbol_busqueda, [arbol_busqueda.posicion])]  # Pila para realizar DFS, contiene nodos y sus caminos
 
     while stack:
-        nodo_actual, camino = stack.pop()
+        nodo_actual, camino = stack.pop() # FIFO
 
         # Si encontramos el destino, devolvemos el camino
         if nodo_actual.posicion == destino:
@@ -97,30 +98,28 @@ def dfs(arbol_busqueda, destino):
     return []
 
 
-def costo_uniforme(arbol_busqueda, destino):
-    # el inicio es la raiz del arbol
-    """
-    Suponemos que los movimientos del laberinto tienen 
-    el costo = numero de la posicion desde donde
-    se salto (cuantos cuadrados saltamos), ya que sino seria un BFS
-    --costo de un movimiento = nodo.valor--
-    """
-    # Cola de prioridad para almacenar los nodos junto con sus costos acumulados
-    cola_prioridad = []
-    heappush(cola_prioridad, (0, arbol_busqueda, [arbol_busqueda.posicion]))  # (costo acumulado, nodo, camino)
+def bfs(arbol_busqueda, destino):
 
-    while cola_prioridad:
-        costo_actual, nodo_actual, camino = heappop(cola_prioridad)
+    # el inicio es la raiz del arbol
+    queue = [(arbol_busqueda, [arbol_busqueda.posicion])]  # Cola para realizar BFS, contiene nodos y sus caminos
+
+    while queue:
+        nodo_actual, camino = queue.pop(0)  # Extraer el primer nodo de la cola LIFO
 
         # Si encontramos el destino, devolvemos el camino
         if nodo_actual.posicion == destino:
-            return camino , costo_actual
+            return camino
 
-        # Agregar los hijos del nodo actual a la cola de prioridad
+        # Agregar los hijos del nodo actual a la cola
         for hijo in nodo_actual.hijos:
-            nuevo_costo = costo_actual + hijo.valor
-            heappush(cola_prioridad, (nuevo_costo, hijo, camino + [hijo.posicion]))
+            queue.append((hijo, camino + [hijo.posicion]))
 
     # Si no se encuentra el destino, devolvemos un camino vacío
-    return [], 0
+    return []
 
+def costo_uniforme(arbol_busqueda, destino):
+    """
+    como todos los movimientos tienen el mismo costo, se puede usar BFS para encontrar el camino
+    de costo uniforme.
+    """
+    return bfs(arbol_busqueda, destino)  # Llamar a la función bfs para encontrar el camino de costo uniforme
