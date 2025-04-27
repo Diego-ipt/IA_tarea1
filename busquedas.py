@@ -3,7 +3,7 @@ from collections import *
 from heapq import heappush, heappop  # Importar cola de prioridad
 
 DEBUG = False  # Variable global para controlar los mensajes de depuración
-
+DEBUG_2 = False 
 class Nodo:
     def __init__(self, posicion, valor):
         self.valor = valor # (valor en la matriz)
@@ -52,11 +52,11 @@ def arbol_busqueda(Laberinto):
                 # Crear un nuevo nodo hijo
                 nodo_hijo = Nodo(movimiento, Laberinto.matriz[movimiento[0]][movimiento[1]])
                 if DEBUG:
-                    print("nodos_visitados", nodo_actual.nodos_visitados)
-                nodo_hijo.nodos_visitados = nodo_actual.nodos_visitados  # Crear una nueva lista
+                    print("nodos_visitados por ",nodo_actual.posicion,": ", nodo_actual.nodos_visitados)
+                nodo_hijo.nodos_visitados = nodo_actual.nodos_visitados.copy()
                 nodo_hijo.nodos_visitados.append(movimiento)  # Añadir el movimiento actual a la lista de nodos visitados
                 if DEBUG:
-                    print("nodos_visitados_new", nodo_hijo.nodos_visitados)
+                    print("nodos_visitados por", nodo_hijo.posicion, ": ",nodo_hijo.nodos_visitados)
                 nodo_actual.agregar_hijo(nodo_hijo)
                 nodos_nivel_one_step.append(nodo_hijo)
                 # Mostrar el nodo hijo que se ha añadido si DEBUG es True
@@ -69,8 +69,25 @@ def arbol_busqueda(Laberinto):
             nodos_nivel_one_step = []
 
     # Mostrar que se ha terminado de construir el árbol de búsqueda si DEBUG es True
-    if DEBUG:
+    if DEBUG_2:
         print("Árbol de búsqueda construido.")
+
+        """
+        Imprime el árbol de búsqueda por capas (niveles) de forma clara, mostrando los hijos de cada nodo.
+        """
+        nivel_actual = [arbol_busqueda]
+        nivel = 0
+
+        while nivel_actual:
+            print(f"Nivel {nivel}:")
+            siguiente_nivel = []
+            for nodo in nivel_actual:
+                hijos_posiciones = [hijo.posicion for hijo in nodo.hijos]
+                print(f"  Nodo {nodo.posicion} -> Hijos: {hijos_posiciones}")
+                siguiente_nivel.extend(nodo.hijos)  # Mover esta línea dentro del bucle
+            nivel_actual = siguiente_nivel  # Actualizar nivel_actual al final del bucle
+            nivel += 1
+
     return arbol_busqueda
 
 
@@ -83,7 +100,9 @@ def dfs(arbol_busqueda, destino):
     stack = [(arbol_busqueda, [arbol_busqueda.posicion])]  # Pila para realizar DFS, contiene nodos y sus caminos
 
     while stack:
-        nodo_actual, camino = stack.pop() # FIFO
+        nodo_actual, camino = stack.pop()  # LIFO 
+        if DEBUG_2:
+            print(f"stack: {[nodo.posicion for nodo, _ in stack]}")  # Mostrar las posiciones de los nodos en la pila
 
         # Si encontramos el destino, devolvemos el camino
         if nodo_actual.posicion == destino:
@@ -104,7 +123,7 @@ def bfs(arbol_busqueda, destino):
     queue = [(arbol_busqueda, [arbol_busqueda.posicion])]  # Cola para realizar BFS, contiene nodos y sus caminos
 
     while queue:
-        nodo_actual, camino = queue.pop(0)  # Extraer el primer nodo de la cola LIFO
+        nodo_actual, camino = queue.pop(0)  # Extraer el primer nodo de la cola FIFO
 
         # Si encontramos el destino, devolvemos el camino
         if nodo_actual.posicion == destino:

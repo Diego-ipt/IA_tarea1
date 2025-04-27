@@ -20,17 +20,18 @@ class Laberinto:
     
 
         # Abajo
-        if fila + saltos < self.filas and (fila + saltos, col) != posicion:
-            movimientos.append((fila + saltos, col))
-        # Arriba
-        if fila - saltos >= 0 and (fila - saltos, col) != posicion:
+        if fila - saltos >= 0 and (fila + saltos, col) != posicion:
             movimientos.append((fila - saltos, col))
+        # Arriba
+        if fila + saltos < self.filas and (fila - saltos, col) != posicion:
+            movimientos.append((fila + saltos, col))
         # Derecha
         if col + saltos < self.columnas and (fila, col + saltos) != posicion:
             movimientos.append((fila, col + saltos))
         # Izquierda
         if col - saltos >= 0 and (fila, col - saltos) != posicion:
             movimientos.append((fila, col - saltos))
+
     
         return movimientos
 

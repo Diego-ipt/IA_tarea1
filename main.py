@@ -5,8 +5,8 @@ from interfaz import *
 from utils import *
 
 DEBUG = False  # Variable global para controlar los mensajes de depuración
-VER_DFS = False  # Variable global para controlar la visualización de DFS
-VER_COSTO_UNIFORME = False  # Variable global para controlar la visualización de búsqueda de costo uniforme
+VER_DFS = True  # Variable global para controlar la visualización de DFS
+VER_COSTO_UNIFORME = True  # Variable global para controlar la visualización de búsqueda de costo uniforme
 EJEMPLO_ESTANDAR = True  # Variable global para controlar la carga de un laberinto estándar
 
 def main():
@@ -16,7 +16,7 @@ def main():
     if EJEMPLO_ESTANDAR==False:
         file_path = input("Por favor, ingrese la ruta del archivo de laberintos: ").strip()
     else:
-        file_path = r"D:\Universidad\7mo semestre\IA\IA_tarea1\Ejemplos\guia.txt"
+        file_path = r"D:\Universidad\7mo semestre\IA\IA_tarea1\Ejemplos\1.txt"
 
     # Validar la ruta del archivo
     try:
